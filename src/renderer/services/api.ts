@@ -245,42 +245,15 @@ class ApiService {
   }
 
   // 检测当前选择的模型属于哪个 provider
-  private detectProvider(modelId: string, providerHint?: string): string {
+  private detectProvider(_modelId: string, providerHint?: string): string {
     const normalizedHint = providerHint?.toLowerCase();
-    if (
-      normalizedHint
-      && (
-        ['openai', 'deepseek', 'moonshot', 'zhipu', 'minimax', 'youdaozhiyun', 'qwen', 'openrouter', 'gemini', 'anthropic', 'xiaomi', 'stepfun', 'volcengine', 'ollama'].includes(normalizedHint)
-        || normalizedHint.startsWith('custom_')
-      )
-    ) {
+    if (normalizedHint && normalizedHint.startsWith('custom_')) {
       return normalizedHint;
     }
-    const normalizedModelId = modelId.toLowerCase();
-    if (normalizedModelId.startsWith('claude')) {
-      return 'anthropic';
-    } else if (normalizedModelId.startsWith('gpt') || normalizedModelId.startsWith('o1') || normalizedModelId.startsWith('o3') || normalizedModelId.startsWith('o4')) {
-      return 'openai';
-    } else if (normalizedModelId.startsWith('gemini')) {
-      return 'gemini';
-    } else if (normalizedModelId.startsWith('deepseek')) {
-      return 'deepseek';
-    } else if (normalizedModelId.startsWith('kimi-')) {
-      return 'moonshot';
-    } else if (normalizedModelId.startsWith('glm-')) {
-      return 'zhipu';
-    } else if (normalizedModelId.startsWith('minimax')) {
-      return 'minimax';
-    } else if (normalizedModelId.startsWith('qwen') || normalizedModelId.startsWith('qvq')) {
-      return 'qwen';
-    } else if (normalizedModelId.startsWith('mimo') || normalizedModelId.includes('xiaomi')) {
-      return 'xiaomi';
-    } else if (normalizedModelId.startsWith('step-')) {
-      return 'stepfun';
-    } else if (normalizedModelId.startsWith('doubao') || normalizedModelId.includes('volcengine') || normalizedModelId.includes('ep-') || normalizedModelId.startsWith('ark-')) {
-      return 'volcengine';
+    if (normalizedHint) {
+      return normalizedHint;
     }
-    return 'openai'; // 默认使用 OpenAI 兼容格式
+    return 'openai'; // fallback to OpenAI-compatible format for unrecognized providers
   }
 
   // 获取指定 provider 的配置
