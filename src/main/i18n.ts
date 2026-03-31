@@ -68,10 +68,6 @@ const translations: Record<LanguageType, Record<string, string>> = {
     // Skill manager errors
     skillErrNoSkillMd: '来源中未找到 SKILL.md',
 
-    // Auth quota
-    authPlanFree: '免费',
-    authPlanStandard: '标准',
-
     // ── IM connectivity test messages ───────────────────────────────────
     // Common
     imMissingCredentials: '缺少必要配置项: {fields}',
@@ -228,10 +224,6 @@ const translations: Record<LanguageType, Record<string, string>> = {
 
     // Skill manager errors
     skillErrNoSkillMd: 'No SKILL.md found in source',
-
-    // Auth quota
-    authPlanFree: 'Free',
-    authPlanStandard: 'Standard',
 
     // ── IM connectivity test messages ───────────────────────────────────
     // Common

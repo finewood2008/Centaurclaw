@@ -19,177 +19,8 @@ export interface AppConfig {
     defaultModel: string;
     defaultModelProvider?: string;
   };
-  // 多模型提供商配置
+  // 多模型提供商配置（仅自定义提供商）
   providers?: {
-    openai: {
-      enabled: boolean;
-      apiKey: string;
-      baseUrl: string;
-      // API 协议格式：anthropic 为 Anthropic 兼容，openai 为 OpenAI 兼容
-      apiFormat?: 'anthropic' | 'openai' | 'gemini';
-      models?: Array<{
-        id: string;
-        name: string;
-        supportsImage?: boolean;
-      }>;
-    };
-    deepseek: {
-      enabled: boolean;
-      apiKey: string;
-      baseUrl: string;
-      apiFormat?: 'anthropic' | 'openai' | 'gemini';
-      models?: Array<{
-        id: string;
-        name: string;
-        supportsImage?: boolean;
-      }>;
-    };
-    moonshot: {
-      enabled: boolean;
-      apiKey: string;
-      baseUrl: string;
-      apiFormat?: 'anthropic' | 'openai' | 'gemini';
-      /** 是否启用 Moonshot Coding Plan 模式（使用专属 Coding API 端点） */
-      codingPlanEnabled?: boolean;
-      models?: Array<{
-        id: string;
-        name: string;
-        supportsImage?: boolean;
-      }>;
-    };
-    zhipu: {
-      enabled: boolean;
-      apiKey: string;
-      baseUrl: string;
-      apiFormat?: 'anthropic' | 'openai' | 'gemini';
-      /** 是否启用 GLM Coding Plan 模式（使用专属 Coding API 端点） */
-      codingPlanEnabled?: boolean;
-      models?: Array<{
-        id: string;
-        name: string;
-        supportsImage?: boolean;
-      }>;
-    };
-    minimax: {
-      enabled: boolean;
-      apiKey: string;
-      baseUrl: string;
-      apiFormat?: 'anthropic' | 'openai' | 'gemini';
-      /** OAuth auth type: 'apikey' (default) or 'oauth' (MiniMax Portal OAuth) */
-      authType?: 'apikey' | 'oauth';
-      /** OAuth refresh token for automatic token renewal */
-      oauthRefreshToken?: string;
-      /** OAuth token expiry as Unix timestamp in milliseconds */
-      oauthTokenExpiresAt?: number;
-      models?: Array<{
-        id: string;
-        name: string;
-        supportsImage?: boolean;
-      }>;
-    };
-    youdaozhiyun: {
-      enabled: boolean;
-      apiKey: string;
-      baseUrl: string;
-      apiFormat?: 'anthropic' | 'openai' | 'gemini';
-      models?: Array<{
-        id: string;
-        name: string;
-        supportsImage?: boolean;
-      }>;
-    };
-    qwen: {
-      enabled: boolean;
-      apiKey: string;
-      baseUrl: string;
-      apiFormat?: 'anthropic' | 'openai' | 'gemini';
-      /** 是否启用 Qwen Coding Plan 模式（使用专属 Coding API 端点） */
-      codingPlanEnabled?: boolean;
-      models?: Array<{
-        id: string;
-        name: string;
-        supportsImage?: boolean;
-      }>;
-    };
-    openrouter: {
-      enabled: boolean;
-      apiKey: string;
-      baseUrl: string;
-      apiFormat?: 'anthropic' | 'openai' | 'gemini';
-      models?: Array<{
-        id: string;
-        name: string;
-        supportsImage?: boolean;
-      }>;
-    };
-    gemini: {
-      enabled: boolean;
-      apiKey: string;
-      baseUrl: string;
-      apiFormat?: 'anthropic' | 'openai' | 'gemini';
-      models?: Array<{
-        id: string;
-        name: string;
-        supportsImage?: boolean;
-      }>;
-    };
-    anthropic: {
-      enabled: boolean;
-      apiKey: string;
-      baseUrl: string;
-      apiFormat?: 'anthropic' | 'openai' | 'gemini';
-      models?: Array<{
-        id: string;
-        name: string;
-        supportsImage?: boolean;
-      }>;
-    };
-    volcengine: {
-      enabled: boolean;
-      apiKey: string;
-      baseUrl: string;
-      apiFormat?: 'anthropic' | 'openai' | 'gemini';
-      /** 是否启用 Volcengine Coding Plan 模式（使用专属 Coding API 端点） */
-      codingPlanEnabled?: boolean;
-      models?: Array<{
-        id: string;
-        name: string;
-        supportsImage?: boolean;
-      }>;
-    };
-    xiaomi: {
-      enabled: boolean;
-      apiKey: string;
-      baseUrl: string;
-      apiFormat?: 'anthropic' | 'openai' | 'gemini';
-      models?: Array<{
-        id: string;
-        name: string;
-        supportsImage?: boolean;
-      }>;
-    };
-    stepfun: {
-      enabled: boolean;
-      apiKey: string;
-      baseUrl: string;
-      apiFormat?: 'anthropic' | 'openai' | 'gemini';
-      models?: Array<{
-        id: string;
-        name: string;
-        supportsImage?: boolean;
-      }>;
-    };
-    ollama: {
-      enabled: boolean;
-      apiKey: string;
-      baseUrl: string;
-      apiFormat?: 'anthropic' | 'openai' | 'gemini';
-      models?: Array<{
-        id: string;
-        name: string;
-        supportsImage?: boolean;
-      }>;
-    };
     [key: string]: {
       enabled: boolean;
       apiKey: string;
@@ -265,14 +96,11 @@ const buildDefaultProviders = (): AppConfig['providers'] => {
 export const defaultConfig: AppConfig = {
   api: {
     key: '',
-    baseUrl: 'https://api.deepseek.com/anthropic',
+    baseUrl: '',
   },
   model: {
-    availableModels: [
-      { id: 'deepseek-reasoner', name: 'DeepSeek Reasoner', supportsImage: false },
-    ],
-    defaultModel: 'deepseek-reasoner',
-    defaultModelProvider: 'deepseek',
+    availableModels: [],
+    defaultModel: '',
   },
   providers: buildDefaultProviders(),
   theme: 'system',
@@ -293,7 +121,6 @@ export const defaultConfig: AppConfig = {
 // 配置存储键
 export const CONFIG_KEYS = {
   APP_CONFIG: 'app_config',
-  AUTH: 'auth_state',
   CONVERSATIONS: 'conversations',
   PROVIDERS_EXPORT_KEY: 'providers_export_key',
   SKILLS: 'skills',
