@@ -131,10 +131,10 @@ const MANAGED_WEB_SEARCH_POLICY_PROMPT = [
   'When you need live web information:',
   '- If you already have a specific URL, use `web_fetch`.',
   '- If you need search discovery, dynamic pages, or interactive browsing, use the built-in `browser` tool.',
-  '- Only use the LobsterAI `web-search` skill when local command execution is available. Native channel sessions may deny `exec`, so prefer `browser` or `web_fetch` there.',
+  '- Only use the CentaurAI `web-search` skill when local command execution is available. Native channel sessions may deny `exec`, so prefer `browser` or `web_fetch` there.',
   '- Exception: the `imap-smtp-email` skill must always use `exec` to run its scripts, even in native channel sessions. Do not skip it because of exec restrictions.',
   '',
-  'Do not claim you searched the web unless you actually used `browser`, `web_fetch`, or the LobsterAI `web-search` skill.',
+  'Do not claim you searched the web unless you actually used `browser`, `web_fetch`, or the CentaurAI `web-search` skill.',
 ].join('\n');
 
 const MANAGED_EXEC_SAFETY_PROMPT = [
@@ -395,8 +395,8 @@ type ProviderDescriptor = {
 };
 
 const PROVIDER_REGISTRY: Record<string, ProviderDescriptor> = {
-  [ProviderName.LobsteraiServer]: {
-    providerId: OpenClawProviderId.LobsteraiServer,
+  [ProviderName.CentauraiServer]: {
+    providerId: OpenClawProviderId.CentauraiServer,
     resolveApi: () => OpenClawApiConst.OpenAICompletions as OpenClawProviderApi,
     normalizeBaseUrl: (url) => {
       const proxyPort = getOpenClawTokenProxyPort();
@@ -782,7 +782,7 @@ export class OpenClawConfigSync {
     }
 
     const proxyPort = getOpenClawTokenProxyPort();
-    if (proxyPort && !allProvidersMap[ProviderName.LobsteraiServer]) {
+    if (proxyPort && !allProvidersMap[ProviderName.CentauraiServer]) {
       const serverModels = getAllServerModelMetadata();
       const firstServerModelId = serverModels[0]?.modelId || modelId;
       const firstServerSel = buildProviderSelection({
@@ -790,22 +790,22 @@ export class OpenClawConfigSync {
         baseURL: `http://127.0.0.1:${proxyPort}/v1`,
         modelId: firstServerModelId,
         apiType: 'openai',
-        providerName: ProviderName.LobsteraiServer,
+        providerName: ProviderName.CentauraiServer,
         supportsImage: serverModels[0]?.supportsImage,
       });
-      const lobsteraiProviderConfig = { ...firstServerSel.providerConfig, models: [] as typeof firstServerSel.providerConfig.models };
+      const centauraiProviderConfig = { ...firstServerSel.providerConfig, models: [] as typeof firstServerSel.providerConfig.models };
       for (const sm of serverModels) {
-        lobsteraiProviderConfig.models.push({
+        centauraiProviderConfig.models.push({
           id: sm.modelId,
           name: sm.modelId,
           api: OpenClawApiConst.OpenAICompletions as OpenClawProviderApi,
           input: sm.supportsImage ? ['text', 'image'] : ['text'],
         });
       }
-      if (lobsteraiProviderConfig.models.length === 0) {
-        lobsteraiProviderConfig.models.push(firstServerSel.providerConfig.models[0]);
+      if (centauraiProviderConfig.models.length === 0) {
+        centauraiProviderConfig.models.push(firstServerSel.providerConfig.models[0]);
       }
-      allProvidersMap[OpenClawProviderId.LobsteraiServer] = lobsteraiProviderConfig;
+      allProvidersMap[OpenClawProviderId.CentauraiServer] = centauraiProviderConfig;
     }
 
     const sandboxMode = mapExecutionModeToSandboxMode(coworkConfig.executionMode || 'auto');
@@ -1499,7 +1499,7 @@ export class OpenClawConfigSync {
         }
       }
 
-      if (!shouldMigrateManagedModelRefs || !(/^agent:[^:]+:lobsterai:/.test(sessionKey))) {
+      if (!shouldMigrateManagedModelRefs || !(/^agent:[^:]+:centaurai:/.test(sessionKey))) {
         continue;
       }
 
@@ -1541,13 +1541,13 @@ export class OpenClawConfigSync {
   }
 
   /**
-   * Resolve the LobsterAI SKILLs installation directory for OpenClaw's
+   * Resolve the CentaurAI SKILLs installation directory for OpenClaw's
    * `skills.load.extraDirs` configuration.
    *
    * Cross-platform paths (via Electron app.getPath('userData')):
-   *   macOS:   ~/Library/Application Support/LobsterAI/SKILLs
-   *   Windows: %APPDATA%/LobsterAI/SKILLs
-   *   Linux:   ~/.config/LobsterAI/SKILLs
+   *   macOS:   ~/Library/Application Support/CentaurAI/SKILLs
+   *   Windows: %APPDATA%/CentaurAI/SKILLs
+   *   Linux:   ~/.config/CentaurAI/SKILLs
    */
   private resolveSkillsExtraDirs(): string[] {
     const userDataSkillsDir = path.join(app.getPath('userData'), 'SKILLs');
@@ -1565,8 +1565,8 @@ export class OpenClawConfigSync {
   }
 
   /**
-   * Build per-skill `enabled` overrides from the LobsterAI SkillManager state,
-   * so that skills disabled in the LobsterAI UI are also hidden from OpenClaw.
+   * Build per-skill `enabled` overrides from the CentaurAI SkillManager state,
+   * so that skills disabled in the CentaurAI UI are also hidden from OpenClaw.
    */
   private buildSkillEntries(): Record<string, { enabled: boolean }> {
     const skills = this.getSkillsList?.() ?? [];
@@ -1581,10 +1581,10 @@ export class OpenClawConfigSync {
    * Sync AGENTS.md to the OpenClaw workspace directory.
    * Embeds the skills routing prompt and system prompt so that OpenClaw's
    * native channel connectors (DingTalk, Feishu, etc.) can discover and
-   * invoke LobsterAI skills.
+   * invoke CentaurAI skills.
    */
   private syncAgentsMd(workspaceDir: string, coworkConfig: CoworkConfig): string | undefined {
-    const MARKER = '<!-- LobsterAI managed: do not edit below this line -->';
+    const MARKER = '<!-- CentaurAI managed: do not edit below this line -->';
 
     try {
       ensureDir(workspaceDir);

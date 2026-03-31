@@ -169,7 +169,7 @@ class AuthService {
           id: m.modelId,
           name: m.modelName,
           provider: m.provider,
-          providerKey: 'lobsterai-server',
+          providerKey: 'centaurai-server',
           isServerModel: true,
           serverApiFormat: m.apiFormat,
           supportsImage: m.supportsImage ?? false,

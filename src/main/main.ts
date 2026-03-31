@@ -142,7 +142,7 @@ const resolveInlineAttachmentDir = (cwd?: string): string => {
       return path.join(resolved, '.cowork-temp', 'attachments', 'manual');
     }
   }
-  return path.join(app.getPath('temp'), 'lobsterai', 'attachments');
+  return path.join(app.getPath('temp'), 'centaurai', 'attachments');
 };
 
 const ensurePngFileName = (value: string): string => {
@@ -159,7 +159,7 @@ const buildLogExportFileName = (): string => {
   const now = new Date();
   const datePart = `${now.getFullYear()}${padTwoDigits(now.getMonth() + 1)}${padTwoDigits(now.getDate())}`;
   const timePart = `${padTwoDigits(now.getHours())}${padTwoDigits(now.getMinutes())}${padTwoDigits(now.getSeconds())}`;
-  return `lobsterai-logs-${datePart}-${timePart}.zip`;
+  return `centaurai-logs-${datePart}-${timePart}.zip`;
 };
 
 const truncateIpcString = (value: string, maxChars: number): string => {
@@ -1077,7 +1077,7 @@ const bindCoworkRuntimeForwarder = (): void => {
     // If session used a server model, notify renderer to refresh quota
     try {
       const apiConfig = resolveCurrentApiConfig();
-      if (apiConfig.providerMetadata?.providerName === 'lobsterai-server') {
+      if (apiConfig.providerMetadata?.providerName === 'centaurai-server') {
         const windows = BrowserWindow.getAllWindows();
         windows.forEach((win) => {
           if (win.isDestroyed()) return;
@@ -1640,13 +1640,13 @@ if (!gotTheLock) {
   app.quit();
 } else {
   // Register custom protocol for OAuth callback
-  app.setAsDefaultProtocolClient('lobsterai');
+  app.setAsDefaultProtocolClient('centaurai');
 
   // Buffer for deep link auth code received before renderer is ready
   let pendingAuthCode: string | null = null;
 
   /**
-   * Parse a lobsterai:// deep link and send (or buffer) the auth code.
+   * Parse a centaurai:// deep link and send (or buffer) the auth code.
    */
   const handleDeepLink = (url: string) => {
     try {
@@ -1683,7 +1683,7 @@ if (!gotTheLock) {
     console.debug('[Main] second-instance event', { commandLine, workingDirectory });
 
     // Check for deep link in command line args (Windows/Linux)
-    const deepLink = commandLine.find(arg => arg.startsWith('lobsterai://'));
+    const deepLink = commandLine.find(arg => arg.startsWith('centaurai://'));
     if (deepLink) {
       handleDeepLink(deepLink);
     }
@@ -2380,8 +2380,8 @@ if (!gotTheLock) {
 
   ipcMain.handle('mcp:fetchMarketplace', async () => {
     const url = app.isPackaged
-      ? 'https://api-overmind.youdao.com/openapi/get/luna/hardware/lobsterai/prod/mcp-marketplace'
-      : 'https://api-overmind.youdao.com/openapi/get/luna/hardware/lobsterai/test/mcp-marketplace';
+      ? 'https://centaurai-api.example.com/mcp-marketplace/prod'
+      : 'https://centaurai-api.example.com/mcp-marketplace/test';
     try {
       const https = await import('https');
       const data = await new Promise<string>((resolve, reject) => {
@@ -4310,7 +4310,7 @@ if (!gotTheLock) {
     // We don't trigger permission dialogs at startup to avoid annoying users
 
     // Ensure default working directory exists
-    const defaultProjectDir = path.join(os.homedir(), 'lobsterai', 'project');
+    const defaultProjectDir = path.join(os.homedir(), 'centaurai', 'project');
     if (!fs.existsSync(defaultProjectDir)) {
       fs.mkdirSync(defaultProjectDir, { recursive: true });
       console.log('Created default project directory:', defaultProjectDir);
@@ -4338,7 +4338,7 @@ if (!gotTheLock) {
     }
     // Inject store getter into claudeSettings
     setStoreGetter(() => store);
-    // Inject auth getters for lobsterai-server provider routing
+    // Inject auth getters for centaurai-server provider routing
     // The getter proactively triggers a background token refresh when the
     // accessToken is within 5 minutes of expiry, so that the SDK always
     // gets a fresh token without blocking.
@@ -4405,7 +4405,7 @@ if (!gotTheLock) {
     setProxyTokenRefresher(() => refreshOnce('proxy'));
 
     // Start the lightweight token proxy before OpenClaw config sync so that
-    // lobsterai-server provider can use the proxy URL in its config.
+    // centaurai-server provider can use the proxy URL in its config.
     try {
       await startOpenClawTokenProxy({
         getAuthTokens,
@@ -4577,7 +4577,7 @@ if (!gotTheLock) {
 
     // Windows/Linux cold start: parse deep link from process.argv
     // Always buffer since renderer is not ready yet after createWindow()
-    const coldStartDeepLink = process.argv.find(arg => arg.startsWith('lobsterai://'));
+    const coldStartDeepLink = process.argv.find(arg => arg.startsWith('centaurai://'));
     if (coldStartDeepLink) {
       try {
         const parsed = new URL(coldStartDeepLink);

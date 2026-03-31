@@ -2294,9 +2294,9 @@ async function handleRequest(
   const upstreamAPIType = resolveUpstreamAPIType(upstreamConfig.provider);
   const openAIRequest = anthropicToOpenAI(parsedRequestBody);
 
-  // Inject session_id and user_message for lobsterai-server logging only.
+  // Inject session_id and user_message for centaurai-server logging only.
   // Strict providers (e.g. Gemini) reject unknown payload fields.
-  if (upstreamConfig.provider === 'lobsterai-server') {
+  if (upstreamConfig.provider === 'centaurai-server') {
     if (currentCoworkSessionId) {
       openAIRequest.session_id = currentCoworkSessionId;
     }
@@ -2387,7 +2387,7 @@ async function handleRequest(
   }
 
   if (!upstreamResponse.ok) {
-    // 401/403 from lobsterai-server likely means the JWT accessToken expired.
+    // 401/403 from centaurai-server likely means the JWT accessToken expired.
     // Refresh the token and retry once before falling through to other error handling.
     if ((upstreamResponse.status === 401 || upstreamResponse.status === 403) && tokenRefresher) {
       console.log(`[CoworkProxy] Got ${upstreamResponse.status}, attempting token refresh and retry...`);
