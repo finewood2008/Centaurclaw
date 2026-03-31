@@ -726,15 +726,15 @@ const downloadGithubArchive = async (
     archiveUrlCandidates.push(
       {
         url: `https://github.com/${source.owner}/${source.repo}/archive/refs/heads/${encodedRef}.zip`,
-        headers: { 'User-Agent': 'LobsterAI Skill Downloader' },
+        headers: { 'User-Agent': 'CentaurAI Skill Downloader' },
       },
       {
         url: `https://github.com/${source.owner}/${source.repo}/archive/refs/tags/${encodedRef}.zip`,
-        headers: { 'User-Agent': 'LobsterAI Skill Downloader' },
+        headers: { 'User-Agent': 'CentaurAI Skill Downloader' },
       },
       {
         url: `https://github.com/${source.owner}/${source.repo}/archive/${encodedRef}.zip`,
-        headers: { 'User-Agent': 'LobsterAI Skill Downloader' },
+        headers: { 'User-Agent': 'CentaurAI Skill Downloader' },
       }
     );
   }
@@ -743,7 +743,7 @@ const downloadGithubArchive = async (
     url: `https://api.github.com/repos/${source.owner}/${source.repo}/zipball${encodedRef ? `/${encodedRef}` : ''}`,
     headers: {
       Accept: 'application/vnd.github+json',
-      'User-Agent': 'LobsterAI Skill Downloader',
+      'User-Agent': 'CentaurAI Skill Downloader',
       'X-GitHub-Api-Version': '2022-11-28',
     },
   });
@@ -940,7 +940,7 @@ const isRemoteZipUrl = (source: string): boolean => {
 const downloadZipUrl = async (zipUrl: string, tempRoot: string): Promise<string> => {
   const response = await session.defaultSession.fetch(zipUrl, {
     method: 'GET',
-    headers: { 'User-Agent': 'LobsterAI Skill Downloader' },
+    headers: { 'User-Agent': 'CentaurAI Skill Downloader' },
   });
 
   if (!response.ok) {
@@ -1410,7 +1410,7 @@ export class SkillManager {
         if (stat.isFile()) {
           if (isZipFile(localSource)) {
             console.log('[SkillManager] downloadSkill: detected local zip file');
-            const tempRoot = fs.mkdtempSync(path.join(app.getPath('temp'), 'lobsterai-skill-zip-'));
+            const tempRoot = fs.mkdtempSync(path.join(app.getPath('temp'), 'centaurai-skill-zip-'));
             await extractZip(localSource, { dir: tempRoot });
             localSource = tempRoot;
             cleanupPath = tempRoot;
@@ -1425,12 +1425,12 @@ export class SkillManager {
         }
       } else if (isRemoteZipUrl(trimmed)) {
         console.log('[SkillManager] downloadSkill: detected remote zip URL');
-        const tempRoot = fs.mkdtempSync(path.join(app.getPath('temp'), 'lobsterai-skill-zip-'));
+        const tempRoot = fs.mkdtempSync(path.join(app.getPath('temp'), 'centaurai-skill-zip-'));
         cleanupPath = tempRoot;
         localSource = await downloadZipUrl(trimmed, tempRoot);
       } else if (isNpmPackageSpec(trimmed)) {
         console.log(`[SkillManager] downloadSkill: detected npm package spec "${trimmed}"`);
-        const tempRoot = fs.mkdtempSync(path.join(app.getPath('temp'), 'lobsterai-skill-npm-'));
+        const tempRoot = fs.mkdtempSync(path.join(app.getPath('temp'), 'centaurai-skill-npm-'));
         cleanupPath = tempRoot;
         localSource = await downloadNpmPackage(trimmed, tempRoot);
         console.log(`[SkillManager] downloadSkill: npm package extracted to ${localSource}`);
@@ -1439,7 +1439,7 @@ export class SkillManager {
         if (!normalized) {
           return { success: false, error: 'Invalid skill source. Use owner/repo, repo URL, npm package spec, or a GitHub tree/blob URL.' };
         }
-        const tempRoot = fs.mkdtempSync(path.join(app.getPath('temp'), 'lobsterai-skill-'));
+        const tempRoot = fs.mkdtempSync(path.join(app.getPath('temp'), 'centaurai-skill-'));
         cleanupPath = tempRoot;
         const repoName = normalizeFolderName(normalized.repoNameHint || deriveRepoName(normalized.repoUrl));
         const clonePath = path.join(tempRoot, repoName);
@@ -1623,7 +1623,7 @@ export class SkillManager {
       const root = this.ensureSkillsRoot();
 
       // Download new version (reuse downloadSkill's download logic)
-      const tempRoot = fs.mkdtempSync(path.join(app.getPath('temp'), 'lobsterai-skill-upgrade-'));
+      const tempRoot = fs.mkdtempSync(path.join(app.getPath('temp'), 'centaurai-skill-upgrade-'));
       cleanupPath = tempRoot;
 
       let localSource: string;

@@ -373,7 +373,7 @@ export class McpServerManager {
     }
 
     const client = new Client(
-      { name: `lobsterai-mcp-bridge`, version: '1.0.0' },
+      { name: `centaurai-mcp-bridge`, version: '1.0.0' },
       { capabilities: {} },
     );
 

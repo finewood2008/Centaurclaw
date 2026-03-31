@@ -2251,7 +2251,7 @@ const CoworkSessionDetail: React.FC<CoworkSessionDetailProps> = ({
                   items.push({
                     key: `${turn.id}-asst`,
                     turnIndex: i,
-                    label: getLabel(asstContent, 'LobsterAI'),
+                    label: getLabel(asstContent, 'CentaurAI'),
                     contentLen: asstContent.length,
                     isUser: false,
                   });
@@ -2358,7 +2358,7 @@ const CoworkSessionDetail: React.FC<CoworkSessionDetailProps> = ({
           >
             {!railTooltip.isUser && (
               <div className="text-[12px] font-medium mb-0.5 text-neutral-800 dark:text-neutral-200">
-                LobsterAI:
+                CentaurAI:
               </div>
             )}
             <div

@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Enable LobsterAI to read a pre-configured enterprise package on startup, sync model/IM/skill/agent/MCP configs into SQLite, and lock down the UI — so enterprise users can run the app with zero manual setup.
+**Goal:** Enable CentaurAI to read a pre-configured enterprise package on startup, sync model/IM/skill/agent/MCP configs into SQLite, and lock down the UI — so enterprise users can run the app with zero manual setup.
 
 **Architecture:** A new `enterpriseConfigSync.ts` module runs before the existing `openclawConfigSync` on startup. It reads `enterprise-config/` from `{userData}`, writes data into SQLite tables (`kv`, `im_config`, `cowork_config`, `mcp_servers`), copies files (skills, agents), and stores a manifest flag. The renderer reads this flag to hide settings tabs and block updates. The existing data flow (`kv → openclawConfigSync → openclaw.json`) is untouched.
 
@@ -931,9 +931,9 @@ git commit -m "feat(enterprise): apply UI customization in Settings"
 - [ ] **Step 1: Create test enterprise config package**
 
 ```bash
-mkdir -p ~/Library/Application\ Support/LobsterAI/enterprise-config/skills/test-skill
-mkdir -p ~/Library/Application\ Support/LobsterAI/enterprise-config/agents
-mkdir -p ~/Library/Application\ Support/LobsterAI/enterprise-config/mcp
+mkdir -p ~/Library/Application\ Support/CentaurAI/enterprise-config/skills/test-skill
+mkdir -p ~/Library/Application\ Support/CentaurAI/enterprise-config/agents
+mkdir -p ~/Library/Application\ Support/CentaurAI/enterprise-config/mcp
 ```
 
 Create `manifest.json`:
@@ -971,7 +971,7 @@ Verify:
 - [ ] **Step 3: Clean up test config**
 
 ```bash
-rm -rf ~/Library/Application\ Support/LobsterAI/enterprise-config
+rm -rf ~/Library/Application\ Support/CentaurAI/enterprise-config
 ```
 
 - [ ] **Step 4: Verify normal mode still works**

@@ -1,8 +1,8 @@
-# LobsterAI ToB Enterprise Config Support
+# CentaurAI ToB Enterprise Config Support
 
 ## Overview
 
-Enable LobsterAI to support enterprise (ToB) deployment by reading a pre-configured package on startup, syncing model/IM/skill/agent/MCP configurations into SQLite, and locking down the UI so users can work immediately without manual setup.
+Enable CentaurAI to support enterprise (ToB) deployment by reading a pre-configured package on startup, syncing model/IM/skill/agent/MCP configurations into SQLite, and locking down the UI so users can work immediately without manual setup.
 
 **Core principle**: Inject enterprise data into SQLite tables before the normal initialization flow. The existing `kv → openclawConfigSync → openclaw.json` pipeline remains untouched.
 
@@ -29,8 +29,8 @@ enterprise-config/                     # Fixed path: {userData}/enterprise-confi
 **Detection**: `{userData}/enterprise-config/manifest.json` exists → enterprise mode active.
 
 **Platform paths**:
-- macOS: `~/Library/Application Support/LobsterAI/enterprise-config/`
-- Windows: `%APPDATA%/LobsterAI/enterprise-config/`
+- macOS: `~/Library/Application Support/CentaurAI/enterprise-config/`
+- Windows: `%APPDATA%/CentaurAI/enterprise-config/`
 
 **Update strategy**: Replace config package files, restart app. Every startup re-syncs from the package.
 
